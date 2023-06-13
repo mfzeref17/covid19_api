@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:uts_max/models/model.dart';
+import 'package:uts_max/repository/repository.dart';
 import 'package:uts_max/sidebar.dart';
+import 'package:uts_max/widgets/statisticsWidgets.dart';
 
 class StatisticPage extends StatefulWidget {
   const StatisticPage({super.key});
@@ -10,6 +13,20 @@ class StatisticPage extends StatefulWidget {
 
 class _StatisticPageState extends State<StatisticPage> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
+  List<Statistics> listStatistics = [];
+  Repository repository = Repository();
+
+  getData() async {
+    listStatistics = await repository.getData();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -147,136 +164,26 @@ class _StatisticPageState extends State<StatisticPage> {
                 ],
               ),
             ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.27,
-              child: GridView(
-                physics: const NeverScrollableScrollPhysics(),
+            Container(
+              margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
+              child: GridView.builder(
                 shrinkWrap: true,
-                padding: const EdgeInsets.all(20),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                physics: NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
                   mainAxisExtent: 77,
                 ),
-                children: [
-                  Container(
-                    padding: const EdgeInsets.only(left: 10, right: 10),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: const Color(0xffdddddd),
-                        width: 1,
-                      ),
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(5),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("295,499",
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                            SizedBox(height: 5),
-                            Text("Total Case",
-                                style: TextStyle(color: Color(0xffFFC542))),
-                          ],
-                        ),
-                        Image.asset("images/emote_datar.png")
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(left: 10, right: 10),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: const Color(0xffdddddd),
-                        width: 1,
-                      ),
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(5),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("295,499",
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                            SizedBox(height: 5),
-                            Text("Total Case",
-                                style: TextStyle(color: Color(0xff09B5FF))),
-                          ],
-                        ),
-                        Image.asset("images/emote_sedih.png")
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(left: 10, right: 10),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: const Color(0xffdddddd),
-                        width: 1,
-                      ),
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(5),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("295,499",
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                            SizedBox(height: 5),
-                            Text("Total Case",
-                                style: TextStyle(color: Color(0xff00BFA6))),
-                          ],
-                        ),
-                        Image.asset("images/emote_senang.png")
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(left: 10, right: 10),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: const Color(0xffdddddd),
-                        width: 1,
-                      ),
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(5),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("295,499",
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                            SizedBox(height: 5),
-                            Text("Total Case",
-                                style: TextStyle(color: Color(0xffFF464F))),
-                          ],
-                        ),
-                        Image.asset("images/emote_kepanasan.png")
-                      ],
-                    ),
-                  ),
-                ],
+                itemBuilder: (context, index) {
+                  return StatisticsWidget(
+                    value: listStatistics[index].value,
+                    name: listStatistics[index].name,
+                    image: listStatistics[index].images,
+                    color: Colors.green,
+                  );
+                },
+                itemCount: listStatistics.length,
               ),
             ),
             Container(
